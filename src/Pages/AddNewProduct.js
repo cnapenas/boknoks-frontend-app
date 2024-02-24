@@ -2,6 +2,7 @@
 import React from 'react';
 import { Form, Button } from 'react-bootstrap';
 import { useState } from 'react';
+import Scanner from './Scanner';
 
 
 
@@ -10,6 +11,7 @@ export default function AddNewProduct() {
         const [productName, setProductName] = useState("");
         const [productQty, setProductQty] = useState("");
         const [productPrice, setProductPrice] = useState("");
+        const [showScanner, setShowScanner] = useState(false);
     
   
         const addProd = async (e) => {
@@ -34,6 +36,12 @@ export default function AddNewProduct() {
               setProductQty(0);
           }
         }
+
+        const handleDetected = (code) => {
+          setProductCode(code);
+          alert("Barcode detected: " + code);
+          setShowScanner(false);
+        };
 
   return (
     <div className="App">
@@ -66,7 +74,8 @@ export default function AddNewProduct() {
              Submit
             </Button>
             
-            
+            <Button variant="secondary" onClick={() => setShowScanner(true)}>Scan Barcode</Button>
+            {showScanner && <Scanner onDetected={handleDetected} />}
         </Form>
       </header>
     </div>

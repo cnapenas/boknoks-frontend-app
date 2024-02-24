@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { UserContext } from './UserContext';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 
@@ -103,24 +104,40 @@ const handleRegister = async (event) => {
 
 
 
+// return (
+//     <div>
+//       {isAuthenticated ? (navigate('/Home')) : (
+//         <form>
+//           <label>
+//             Username:
+//             <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
+//           </label>
+//           <label>
+//             Password:
+//             <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+//           </label>
+//           <button type="button" onClick={handleLogin}>Log in</button>
+//           <button type="button" onClick={handleRegister}>Register</button>
+//         </form>
+//       )}
+//     </div>
+//   );
+
 return (
-    <div>
-      {isAuthenticated ? (navigate('/Home')) : (
-        <form>
-          <label>
-            Username:
-            <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
-          </label>
-          <label>
-            Password:
-            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-          </label>
-          <button type="button" onClick={handleLogin}>Log in</button>
-          <button type="button" onClick={handleRegister}>Register</button>
-        </form>
-      )}
-    </div>
-  );
+  <div className="container">
+  {isAuthenticated ? (navigate('/Home')) : (
+    <form className="form-signin">
+      <h2 className="form-signin-heading">Please sign in</h2>
+      <label htmlFor="inputUsername" className="sr-only">Username</label>
+      <input type="text" id="inputUsername" className="form-control" placeholder="Username" required autoFocus value={username} onChange={(e) => setUsername(e.target.value)} />
+      <label htmlFor="inputPassword" className="sr-only">Password</label>
+      <input type="password" id="inputPassword" className="form-control" placeholder="Password" required value={password} onChange={(e) => setPassword(e.target.value)} />
+      <button className="btn btn-lg btn-primary btn-block" type="button" onClick={handleLogin}>Log in</button>
+      <button className="btn btn-lg btn-secondary btn-block" type="button" onClick={handleRegister}>Register</button>
+    </form>
+  )}
+</div>
+);
 }
 
 export default LoginForm;
