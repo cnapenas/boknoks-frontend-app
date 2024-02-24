@@ -1,6 +1,7 @@
 // Scanner.js
 import React, { useEffect, useRef } from 'react';
-import Quagga from 'quagga'; // Assuming you're using Quagga for barcode scanning
+import Quagga from '@ericblade/quagga2'; // ES6
+
 
 export default function Scanner({ onDetected }) {
   const videoRef = useRef(null);
