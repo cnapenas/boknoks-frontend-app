@@ -77,6 +77,7 @@ export default function AddNewProduct() {
             <Button variant="secondary" onClick={() => setShowScanner(true)}>Scan Barcode</Button>
             {showScanner && <Scanner onDetected={handleDetected} />}
         </Form>
+        {showScanner && <div className="camera-square"></div>}
       </header>
     </div>
   );
