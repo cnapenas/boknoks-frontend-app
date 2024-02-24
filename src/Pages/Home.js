@@ -3,18 +3,14 @@ import React, { useEffect, useState } from 'react';
 
 const Home = () => {
    const [prodList, setProdList] = useState([]);
+   
 
    useEffect(() => {
       const fetchData = async () => {
-         // let result = await fetch('http://localhost:3001/getDetails', {
-         //    method: "get",
-         //    headers: {
-         //       'Content-Type': 'application/json'
-         //    }
-         // });
+        
 
 
-         fetch('http://localhost:3000/getProducts', {
+         fetch(process.env.REACT_APP_BACKEND_URL+'/getProducts', {
          method: "get",
          headers: {
             'Content-Type': 'application/json'
@@ -39,13 +35,6 @@ const Home = () => {
          .catch(error => {
          console.error('There was a problem with the fetch operation: ', error);
          });
-
-         // result = await result.json();
-         // console.warn(result);
-         // if (result) {
-         //    alert("Data saved succesfully");
-         //    setProdList(result);
-         // }
 
          
       };

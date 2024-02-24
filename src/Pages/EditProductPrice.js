@@ -46,7 +46,7 @@ const EditProductPrice = () => {
       const fetchData = async () => 
       {
          
-         fetch('http://localhost:3000/getProducts', {
+         fetch(process.env.REACT_APP_BACKEND_URL+'/getProducts', {
          method: "get",
          headers: {
             'Content-Type': 'application/json'
@@ -92,7 +92,7 @@ const EditProductPrice = () => {
    const updateProdPrice= () => {
        
     console.log(updatedData);
-    fetch(`http://localhost:3000/updateDataPrice/${pCode}`, {
+    fetch(process.env.REACT_APP_BACKEND_URL+'/updateDataPrice/${pCode}', {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'

@@ -1,15 +1,20 @@
-import React from 'react';
+
 import { Outlet, Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
+import React, { useContext } from 'react';
+import { UserContext } from './UserContext';
 
 
 function Layout({isAuthenticated,setIsAuthenticated}) {
 
     const navigate = useNavigate();
+    const location = useLocation();
+    const { usrnme } = useContext(UserContext);
 
     const logout = async () => {
         console.log('Logging out');
-        const response = await fetch('http://localhost:3000/logout', {
+        const response = await fetch(process.env.REACT_APP_BACKEND_URL+'/logout', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -31,7 +36,7 @@ function Layout({isAuthenticated,setIsAuthenticated}) {
         }
     };
 
-    const username = "username";
+    const username = usrnme;
 
 
     return (

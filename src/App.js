@@ -12,13 +12,14 @@ import SearchProduct from './Pages/SearchProduct';
 import DeleteProduct from './Pages/DeleteProduct';
 import LoginForm from './Pages/Login'; 
 import { useState } from 'react';
+import { UserProvider } from './Pages/UserContext';
 
 export default function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(true);
 
 
   return (
-    
+    <UserProvider>
     <BrowserRouter>
       <Routes>
       <Route index="/" element={<LoginForm setIsAuthenticated = {setIsAuthenticated} />} /> {/* Add this line */}
@@ -33,6 +34,8 @@ export default function App() {
         </Route>
       </Routes>
     </BrowserRouter>
+  </UserProvider>
+    
   );
 }
 

@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+
+import { UserContext } from './UserContext';
 
 
 
@@ -8,6 +10,7 @@ const LoginForm = ({isAuthenticated,setIsAuthenticated}) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
+  const userContext = useContext(UserContext);
 
 
 
@@ -52,8 +55,12 @@ const handleLogin = async (event) => {
             const data = await response.json();
             console.log('Login successful json' + data);
             console.log('Login successful user' + data.user);
+            const usrnme = data.user;
+            const { setUsrnme } =userContext;
+            setUsrnme(usrnme);
             setIsAuthenticated(true);
             navigate('/Home');
+            
         }
     
         // handle response...
@@ -72,7 +79,7 @@ const handleRegister = async (event) => {
        
     event.preventDefault();
     try {
-            const response = await fetch('http://localhost:3000/register', {
+            const response = await fetch(process.env.REACT_APP_BACKEND_URL+'/register', {
             method: "post",
             headers: {
               'Content-Type': 'application/json'

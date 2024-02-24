@@ -42,7 +42,7 @@ const AddProductStock = () => {
       const fetchData = async () => 
       {
          
-         fetch('http://localhost:3000/getProducts', {
+         fetch(process.env.REACT_APP_BACKEND_URL+'/getProducts', {
          method: "get",
          headers: {
             'Content-Type': 'application/json'
@@ -88,7 +88,7 @@ const AddProductStock = () => {
    const updateProdQty = () => {
        
     console.log(pCode);
-    fetch(`http://localhost:3000/updateDataQty/${pCode}`, {
+    fetch(process.env.REACT_APP_BACKEND_URL+'/updateDataQty/${pCode}', {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'

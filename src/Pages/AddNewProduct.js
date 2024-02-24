@@ -16,7 +16,7 @@ export default function AddNewProduct() {
         e.preventDefault();
        
         let result = await fetch(
-          'http://localhost:3000/addnewproduct', {
+          process.env.REACT_APP_BACKEND_URL+'/addnewproduct', {
               method: "post",
               body: JSON.stringify({productCode, productName, productQty, productPrice }),
               headers: {

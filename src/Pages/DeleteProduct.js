@@ -20,7 +20,7 @@ const DeleteProduct = () => {
     const fetchData = async (setProdList) => 
         {
            
-           fetch('http://localhost:3001/getProducts', {
+           fetch(process.env.REACT_APP_BACKEND_URL+'/getProducts', {
            method: "get",
            headers: {
               'Content-Type': 'application/json'
@@ -76,7 +76,7 @@ const DeleteProduct = () => {
      const deleteProduct = () => {
         console.log("pCode: ", pCode);
       
-        fetch(`http://localhost:3001/deleteProduct/${pCode}`, {
+        fetch(process.env.REACT_APP_BACKEND_URL+'/deleteProduct/${pCode}', {
         method: "delete",
         headers: {
            'Content-Type': 'application/json'
