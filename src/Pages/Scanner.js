@@ -17,9 +17,7 @@ export default function Scanner({ onDetected }) {
                 constraints: {
                   width: 640,
                   height: 480,
-                  facingMode: {
-                    exact: "environment"
-                  }
+                  facingMode: 'user'
                 }
               },
               locator: {
@@ -28,7 +26,8 @@ export default function Scanner({ onDetected }) {
               },
               numOfWorkers: 4,
               decoder: {
-                readers: ['code_128_reader', 'ean_reader', 'upc_reader'] // or any other barcode type
+                readers: ['code_128_reader', 'ean_reader', 'upc_reader', 'ean_8_reader','code_39_reader','code_39_vin_reader','codabar_reader',
+                'upc_e_reader', 'i2of5_reader','2of5_reader','code_93_reader'] // or any other barcode type
               },
               locate: true
             }, function(err) {
