@@ -36,7 +36,7 @@ const handleLogin = async (event) => {
     // }
 
     try {
-        const response = await fetch('http://boknoks-backend-app.onrender.com/loginv2', {
+        const response = await fetch('https://boknoks-backend-app.onrender.com/loginv2', {
             method: "post",
             headers: {
                 'Content-Type': 'application/json'
