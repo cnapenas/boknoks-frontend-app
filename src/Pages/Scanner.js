@@ -18,7 +18,9 @@ export default function Scanner({ onDetected }) {
                 constraints: {
                   width: 640,
                   height: 480,
-                  facingMode: 'environment'
+                  facingMode: 'environment',
+                  focusMode: "continuous",
+                  aspectRatio: {min: 1, max: 2}
                 }
               },
               locator: {
