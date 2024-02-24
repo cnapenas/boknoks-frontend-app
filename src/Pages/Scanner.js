@@ -13,7 +13,7 @@ export default function Scanner({ onDetected }) {
             videoRef.current.srcObject = stream;
             Quagga.init({
               inputStream: {
-                type: 'LiveStream',
+                type: 'VideoStream',
                 constraints: {
                   width: 640,
                   height: 480,
