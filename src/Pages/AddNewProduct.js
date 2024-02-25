@@ -3,6 +3,7 @@ import React from 'react';
 import { Form, Button, Modal } from 'react-bootstrap';
 import { useState } from 'react';
 import Scanner from './Scanner';
+import { useEffect } from 'react';
 
 
 
@@ -16,6 +17,12 @@ export default function AddNewProduct() {
         const [scanSuccess, setScanSuccess] = useState(false);
         const [scanCode, setScanCode] = useState('');
         const [results, setResults] = useState(null);
+
+        useEffect(() => {
+          if (scanSuccess) {
+            setProductCode(scanCode);
+          }
+        }, [scanSuccess, scanCode]);
 
        
         const toggle = () => {
@@ -92,19 +99,11 @@ export default function AddNewProduct() {
              Submit
             </Button>
             
-            <Button variant="secondary" onClick={() => setShowScanner(true)}>Scan Barcode</Button>
-            {showScanner && <Scanner onDetected={handleDetected} />}
+            <Button variant="secondary" onClick={toggle}>Scan Barcode</Button>
         </Form>
         <div>
-        <Button variant="info" block onClick={toggle}>
-          Scan Barcode
-        </Button>
-
-       
-        <input id="scanner_result_scanCode" type="text" value={scanCode} readOnly />
-        <input id="scanner_result_result" type="text" value={results} readOnly />
-        <input id="scanner_result_scanSuccess" type="text" value={scanSuccess} readOnly />
-
+      
+        
         <Modal show={modal} onHide={toggle}>
           <Modal.Header closeButton="true" />
           <Modal.Body>
