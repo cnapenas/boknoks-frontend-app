@@ -61,12 +61,6 @@ export default function AddNewProduct() {
           }
         }
 
-        const handleDetected = (code) => {
-          setProductCode(code);
-          alert("Barcode detected: " + code);
-          setShowScanner(false);
-        };
-
         
 
   return (

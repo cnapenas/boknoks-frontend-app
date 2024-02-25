@@ -2,7 +2,8 @@
 import React from 'react';
 import { useState } from 'react';
 import { useEffect } from 'react';
-import { Button } from 'react-bootstrap';
+import { Button, Modal } from 'react-bootstrap';
+import Scanner from './Scanner';
 
 const AddProductStock = () => {
     
@@ -16,6 +17,11 @@ const AddProductStock = () => {
     });
     const [qtyArray, setQtyArray] = useState([]);
     const [pCodeArray, setPCodeArray] = useState([]);
+
+    const [modal, setModal] = useState(false);
+    const [scanSuccess, setScanSuccess] = useState(false);
+    const [scanCode, setScanCode] = useState('');
+    const [results, setResults] = useState(null);
     
 
     const handleSelectChange = (event) => {
@@ -35,6 +41,25 @@ const AddProductStock = () => {
         setTotalQty (qtyArray.length > selectedIndex ? ( Number(qtyArray[selectedIndex]) + Number(event.target.value)) : (prodList.length > 0 ? (prodList[0].productQty + Number(event.target.value)) : 0))
         //setTotalQty(event.target.value);
       };
+
+    const toggle = () => {
+        setModal(prevModal => !prevModal);
+        setScanSuccess(false);
+    }
+      
+    const onDetected = (result) => {
+        setModal(false);
+        setScanCode(result ? result.codeResult.code : '');
+        setScanSuccess(!!result);
+        setResults(result);
+        //alert("Barcode detected: " + result.codeResult.format);
+        const productIndex = prodList.findIndex(item => item.productCode === scanCode);
+        if (productIndex !== -1) {
+            alert(`Product found at index: ${productIndex}`);
+        } else {
+            alert('Product not found');
+        }
+    }
 
 
 
@@ -130,7 +155,7 @@ const AddProductStock = () => {
                 </tr>
                 <tr style={{ border: '1px solid black' }}>
                     <td style={{ border: '1px solid black' }}>
-                    <select onChange={handleSelectChange} >
+                    <select onChange={handleSelectChange} value={prodList[selectedIndex]?.productName}>
                    
                     {prodList.map((item, index) => (
                         <option key={index} value={item.productName}>
@@ -158,6 +183,18 @@ const AddProductStock = () => {
             <Button variant="primary" style={{ marginTop: '20px' }} onClick={updateProdQty}>
             Submit
             </Button>
+            <Button variant="secondary" style={{ marginTop: '20px' }} onClick={toggle}>Scan Barcode</Button>
+
+            <div>
+      
+        
+            <Modal show={modal} onHide={toggle}>
+            <Modal.Header closeButton="true" />
+            <Modal.Body>
+                <Scanner handleScan={onDetected} />
+            </Modal.Body>
+            </Modal>
+      </div>
       </>
     );
 };

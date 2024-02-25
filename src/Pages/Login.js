@@ -144,8 +144,8 @@ return (
       <input type="text" id="inputUsername" className="form-control" placeholder="Username" required autoFocus value={username} onChange={(e) => setUsername(e.target.value)} />
       <label htmlFor="inputPassword" className="sr-only">Password</label>
       <input type="password" id="inputPassword" className="form-control" placeholder="Password" required value={password} onChange={(e) => setPassword(e.target.value)} />
-      <button className="btn btn-lg btn-primary btn-block" type="button" onClick={handleLogin}>Log in</button>
-      <button className="btn btn-lg btn-secondary btn-block" type="button" onClick={handleRegister}>Register</button>
+      <button className="btn btn-lg btn-primary btn-block" style={{ marginTop: '20px' }} type="button" onClick={handleLogin}>Log in</button>
+      <button className="btn btn-lg btn-secondary btn-block" style={{ marginTop: '20px' }} type="button" onClick={handleRegister}>Register</button>
     </form>
   )}
 </div>
