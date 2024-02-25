@@ -130,11 +130,12 @@ const handleRegister = async (event) => {
 
 return (
   <div className="container">
-     {isLoading && (
-            <Modal>
-                <Modal.Body>Loading...</Modal.Body>  // Replace this with your actual loading UI
-            </Modal>
-      )}
+     <Modal show={isLoading} >
+            <Modal.Header closeButton="true" />
+            <Modal.Body>
+              Loading
+            </Modal.Body>
+      </Modal>
     {isAuthenticated ? (navigate('/Home')) : (
 
     <form className="form-signin">
