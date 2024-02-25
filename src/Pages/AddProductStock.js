@@ -54,11 +54,7 @@ const AddProductStock = () => {
         setResults(result);
         //alert("Barcode detected: " + result.codeResult.format);
         const productIndex = prodList.findIndex(item => item.productCode === scanCode);
-        if (productIndex !== -1) {
-            alert(`Product found at index: ${productIndex}`);
-        } else {
-            alert('Product not found');
-        }
+        setSelectedIndex(productIndex);
     }
 
 

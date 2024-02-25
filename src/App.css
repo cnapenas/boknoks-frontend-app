@@ -105,7 +105,7 @@ canvas.drawingBuffer {
   padding: 0px;
 }
 
-.centered-modal .modal-dialog {
+.centered-modal {
   position: absolute;
   top: 50%;
   left: 50%;
