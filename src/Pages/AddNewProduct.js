@@ -12,22 +12,22 @@ export default function AddNewProduct() {
         const [productQty, setProductQty] = useState("");
         const [productPrice, setProductPrice] = useState("");
         const [showScanner, setShowScanner] = useState(false);
+        const [modal, setModal] = useState(false);
+        const [scanSuccess, setScanSuccess] = useState(false);
+        const [scanCode, setScanCode] = useState('');
+        const [results, setResults] = useState(null);
 
        
         const toggle = () => {
-          this.setState(prevState => ({
-            modal: !prevState.modal,
-            scanSuccess: false
-          }));
+          setModal(prevModal => !prevModal);
+          setScanSuccess(false);
         }
         
         const onDetected = (result) => {
-          this.setState({
-            modal: false,
-            scanCode: result ? result.codeResult.code : '',
-            scanSuccess: result ? true : false,
-            results: result
-          });
+          setModal(false);
+          setScanCode(result ? result.codeResult.code : '');
+          setScanSuccess(!!result);
+          setResults(result);
         }
   
         const addProd = async (e) => {
@@ -96,16 +96,16 @@ export default function AddNewProduct() {
             {showScanner && <Scanner onDetected={handleDetected} />}
         </Form>
         <div>
-        <Button variant="info" block onClick={this._toggle}>
+        <Button variant="info" block onClick={toggle}>
           Scan Barcode
         </Button>
 
        
-        <input id="scanner_result" type="text" value={this.state.scanCode} />
-        <input id="scanner_result" type="text" value={this.state.result} />
-        <input id="scanner_result" type="text" value={this.state.scanSuccess} />
+        <input id="scanner_result_scanCode" type="text" value={scanCode} readOnly />
+        <input id="scanner_result_result" type="text" value={results} readOnly />
+        <input id="scanner_result_scanSuccess" type="text" value={scanSuccess} readOnly />
 
-        <Modal show={this.state.modal} onHide={toggle}>
+        <Modal show={modal} onHide={toggle}>
           <Modal.Header closeButton="true" />
           <Modal.Body>
             <Scanner handleScan={onDetected} />
