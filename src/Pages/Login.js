@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { UserContext } from './UserContext';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { Modal } from 'react-bootstrap';
 
 
 
@@ -10,6 +11,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 const LoginForm = ({isAuthenticated,setIsAuthenticated}) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const userContext = useContext(UserContext);
 
@@ -40,6 +42,7 @@ const handleLogin = async (event) => {
     // }
 
     try {
+        setIsLoading(true);
         const response = await fetch(process.env.REACT_APP_BACKEND_URL+'/loginv2', {
             method: "post",
             headers: {
@@ -71,6 +74,8 @@ const handleLogin = async (event) => {
         } else {
             console.log(error);
         }
+    } finally {
+        setIsLoading(false);
     }
 
    
@@ -125,7 +130,13 @@ const handleRegister = async (event) => {
 
 return (
   <div className="container">
-  {isAuthenticated ? (navigate('/Home')) : (
+     {isLoading && (
+            <Modal>
+                <Modal.Body>Loading...</Modal.Body>  // Replace this with your actual loading UI
+            </Modal>
+      )}
+    {isAuthenticated ? (navigate('/Home')) : (
+
     <form className="form-signin">
       <h2 className="form-signin-heading">Please sign in</h2>
       <label htmlFor="inputUsername" className="sr-only">Username</label>
