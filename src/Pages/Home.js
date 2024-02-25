@@ -44,37 +44,70 @@ const Home = () => {
       fetchData();
    }, []);
 
+   // return (
+   //    <>
+   //       <h1>Products</h1>
+   //       <hr />
+   //       {prodList.length > 0 && (
+   //          <table style={{ border: '1px solid black', borderCollapse: 'collapse' }}>
+   //             <thead>
+   //                <tr style={{ border: '1px solid black' }}> 
+   //                   <th style={{ border: '1px solid black' }}>Product Code</th>
+   //                   <th style={{ border: '1px solid black' }}>Product Name</th>
+   //                   <th style={{ border: '1px solid black' }}>Product Qty</th>
+   //                   <th style={{ border: '1px solid black' }}>Product Price</th>
+   //                </tr>
+   //             </thead>
+   //             <tbody>
+   //                {prodList.map(item => { 
+                      
+   //                   return (
+   //                   <tr style={{ border: '1px solid black' }}>
+   //                      <td style={{ border: '1px solid black' }}>{item.productCode}</td>
+   //                      <td style={{ border: '1px solid black' }}>{item.productName}</td>
+   //                      <td style={{ border: '1px solid black' }}>{item.productQty}</td>
+   //                      <td style={{ border: '1px solid black' }}>{item.productPrice}</td>
+   //                   </tr>
+   //                );
+   //                    } )}
+   //             </tbody>
+   //          </table>
+   //       )}
+   //    </>
+   // );
+
    return (
       <>
-         <h1>Products</h1>
-         <hr />
-         {prodList.length > 0 && (
-            <table style={{ border: '1px solid black', borderCollapse: 'collapse' }}>
-               <thead>
-                  <tr style={{ border: '1px solid black' }}> 
-                     <th style={{ border: '1px solid black' }}>Product Code</th>
-                     <th style={{ border: '1px solid black' }}>Product Name</th>
-                     <th style={{ border: '1px solid black' }}>Product Qty</th>
-                     <th style={{ border: '1px solid black' }}>Product Price</th>
-                  </tr>
-               </thead>
-               <tbody>
-                  {prodList.map(item => { 
-                      
-                     return (
-                     <tr style={{ border: '1px solid black' }}>
-                        <td style={{ border: '1px solid black' }}>{item.productCode}</td>
-                        <td style={{ border: '1px solid black' }}>{item.productName}</td>
-                        <td style={{ border: '1px solid black' }}>{item.productQty}</td>
-                        <td style={{ border: '1px solid black' }}>{item.productPrice}</td>
-                     </tr>
+        <h1>Products</h1>
+        <hr />
+        {prodList.length > 0 && (
+          <div style={{ overflowX: 'auto' }}>
+            <table style={{ border: '1px solid black', borderCollapse: 'collapse', width: '100%', tableLayout: 'fixed' }}>
+              <thead>
+                <tr style={{ border: '1px solid black' }}> 
+                  <th style={{ border: '1px solid black' }}>Product Code</th>
+                  <th style={{ border: '1px solid black' }}>Product Name</th>
+                  <th style={{ border: '1px solid black' }}>Product Qty</th>
+                  <th style={{ border: '1px solid black' }}>Product Price</th>
+                </tr>
+              </thead>
+              <tbody>
+                {prodList.map(item => { 
+                  return (
+                    <tr style={{ border: '1px solid black' }}>
+                      <td style={{ border: '1px solid black', wordWrap: 'break-word' }}>{item.productCode}</td>
+                      <td style={{ border: '1px solid black', wordWrap: 'break-word' }}>{item.productName}</td>
+                      <td style={{ border: '1px solid black', wordWrap: 'break-word' }}>{item.productQty}</td>
+                      <td style={{ border: '1px solid black', wordWrap: 'break-word' }}>{item.productPrice}</td>
+                    </tr>
                   );
-                      } )}
-               </tbody>
+                })}
+              </tbody>
             </table>
-         )}
+          </div>
+        )}
       </>
-   );
+    );
 };
 
 
