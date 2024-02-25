@@ -35,6 +35,7 @@ export default function AddNewProduct() {
           setScanCode(result ? result.codeResult.code : '');
           setScanSuccess(!!result);
           setResults(result);
+          alert("Barcode detected: " + result.codeResult.format);
         }
   
         const addProd = async (e) => {
