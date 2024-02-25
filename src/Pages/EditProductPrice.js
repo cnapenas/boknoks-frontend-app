@@ -92,7 +92,7 @@ const EditProductPrice = () => {
    const updateProdPrice= () => {
        
     console.log(updatedData);
-    fetch(process.env.REACT_APP_BACKEND_URL+'/updateDataPrice/${pCode}', {
+    fetch(process.env.REACT_APP_BACKEND_URL+`/updateDataPrice/${pCode}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'

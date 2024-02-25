@@ -88,7 +88,7 @@ const AddProductStock = () => {
    const updateProdQty = () => {
        
     console.log(pCode);
-    fetch(process.env.REACT_APP_BACKEND_URL+'/updateDataQty/${pCode}', {
+    fetch(process.env.REACT_APP_BACKEND_URL+`/updateDataQty/${pCode}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'

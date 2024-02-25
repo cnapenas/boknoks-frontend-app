@@ -76,7 +76,7 @@ const DeleteProduct = () => {
      const deleteProduct = () => {
         console.log("pCode: ", pCode);
       
-        fetch(process.env.REACT_APP_BACKEND_URL+'/deleteProduct/${pCode}', {
+        fetch(process.env.REACT_APP_BACKEND_URL+`/deleteProduct/${pCode}`, {
         method: "delete",
         headers: {
            'Content-Type': 'application/json'

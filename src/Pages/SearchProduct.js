@@ -19,7 +19,7 @@ const  SearchProduct = () => {
         }
         console.log("pCode: ", pCode);
         console.log("pName: ", pName);
-        fetch(process.env.REACT_APP_BACKEND_URL+'/getProductWithProductCodeAndName/${pCode}/${pName}', {
+        fetch(process.env.REACT_APP_BACKEND_URL+`/getProductWithProductCodeAndName/${pCode}/${pName}`, {
         method: "get",
         headers: {
            'Content-Type': 'application/json'
