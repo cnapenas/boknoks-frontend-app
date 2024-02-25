@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Form, Button } from 'react-bootstrap';
+import { Form, Button, Modal } from 'react-bootstrap';
 import { useState } from 'react';
 import Scanner from './Scanner';
 
@@ -12,7 +12,23 @@ export default function AddNewProduct() {
         const [productQty, setProductQty] = useState("");
         const [productPrice, setProductPrice] = useState("");
         const [showScanner, setShowScanner] = useState(false);
-    
+
+       
+        const toggle = () => {
+          this.setState(prevState => ({
+            modal: !prevState.modal,
+            scanSuccess: false
+          }));
+        }
+        
+        const onDetected = (result) => {
+          this.setState({
+            modal: false,
+            scanCode: result ? result.codeResult.code : '',
+            scanSuccess: result ? true : false,
+            results: result
+          });
+        }
   
         const addProd = async (e) => {
         e.preventDefault();
@@ -42,6 +58,8 @@ export default function AddNewProduct() {
           alert("Barcode detected: " + code);
           setShowScanner(false);
         };
+
+        
 
   return (
     <div className="App">
@@ -77,7 +95,23 @@ export default function AddNewProduct() {
             <Button variant="secondary" onClick={() => setShowScanner(true)}>Scan Barcode</Button>
             {showScanner && <Scanner onDetected={handleDetected} />}
         </Form>
-        {showScanner && <div className="camera-square"></div>}
+        <div>
+        <Button variant="info" block onClick={this._toggle}>
+          Scan Barcode
+        </Button>
+
+       
+        <input id="scanner_result" type="text" value={this.state.scanCode} />
+        <input id="scanner_result" type="text" value={this.state.result} />
+        <input id="scanner_result" type="text" value={this.state.scanSuccess} />
+
+        <Modal show={this.state.modal} onHide={toggle}>
+          <Modal.Header closeButton="true" />
+          <Modal.Body>
+            <Scanner handleScan={onDetected} />
+          </Modal.Body>
+        </Modal>
+      </div>
       </header>
     </div>
   );
