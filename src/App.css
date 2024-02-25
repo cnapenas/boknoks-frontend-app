@@ -110,4 +110,8 @@ canvas.drawingBuffer {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  max-width: 90%; /* modal will be at most 90% of the screen width */
+  width: 100%; /* modal will try to fill the entire width, but max-width will limit it */
+  box-sizing: border-box; /* include padding and border in the element's total width and height */
+  padding: 20px; /* add some space around the content */
 }
