@@ -41,8 +41,13 @@ function Layout({isAuthenticated,setIsAuthenticated}) {
 
     return (
         <>
-            <nav>
-                <ul>
+            <nav className='"navbar"'>
+                <div className='user-info'>
+                    <label>Welcome, </label>
+                    <label>{username}</label>
+                    <button onClick={logout}>Logout</button>
+                </div>
+                <ul className='nav-links'>
                     <li>
                         <Link to="/Home">Home</Link>
                     </li>
@@ -61,12 +66,11 @@ function Layout({isAuthenticated,setIsAuthenticated}) {
                     <li>
                         <Link to="/DeleteProduct">Delete Product</Link>
                     </li>
+                    <li>
+                        <Link to="/BuyProduct">Buy</Link>
+                    </li>
                 </ul>
-                <div style={{ position: 'absolute', top: 0, right: 0 }}>
-                    <label>Welcome, </label>
-                    <label>{username}</label>
-                    <button onClick={logout}>Logout</button>
-                </div>
+               
             </nav>
 
             <Outlet />
