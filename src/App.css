@@ -119,16 +119,21 @@ canvas.drawingBuffer {
 
 /* Navbar  Layout.cs */
 .navbar {
-  display: flex;
-  justify-content: space-between;
   padding: 20px;
   background-color: #f8f9fa;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+.user-info {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
 .nav-links {
   list-style: none;
   display: flex;
+  justify-content: space-between;
   gap: 20px;
   padding-top: 40px;
 }
@@ -145,12 +150,6 @@ canvas.drawingBuffer {
   color: #333;
 }
 
-.user-info {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
 .logout-button {
   background-color: #dc3545;
   color: #fff;
@@ -158,4 +157,16 @@ canvas.drawingBuffer {
   padding: 5px 10px;
   border-radius: 5px;
   cursor: pointer;
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
+  .nav-links {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .nav-links li {
+    margin-bottom: 20px;
+  }
 }
