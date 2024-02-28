@@ -4,6 +4,7 @@ import { Form, Button, Modal } from 'react-bootstrap';
 import { useState } from 'react';
 import Scanner from './Scanner';
 import { useEffect } from 'react';
+import { useRef } from 'react';
 
 
 
@@ -17,6 +18,11 @@ export default function AddNewProduct() {
         const [scanSuccess, setScanSuccess] = useState(false);
         const [scanCode, setScanCode] = useState('');
         const [results, setResults] = useState(null);
+        const formRef = useRef(null);
+
+        useEffect(() => {
+          formRef.current.scrollIntoView({ behavior: 'smooth' });
+        }, []);
 
 
         useEffect(() => {
@@ -71,7 +77,7 @@ export default function AddNewProduct() {
     <div className="App">
       <header className="App-header">
         <h1>AddProduct</h1>
-        <Form onSubmit={addProd}> 
+        <Form onSubmit={addProd} ref={formRef}> 
           
             <Form.Group controlId="productCode">
                 <Form.Label>Product Code</Form.Label>

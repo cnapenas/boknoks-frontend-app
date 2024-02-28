@@ -131,9 +131,8 @@ canvas.drawingBuffer {
 }
 
 .nav-links {
-  list-style: none;
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   gap: 20px;
   padding-top: 40px;
 }
@@ -145,10 +144,14 @@ canvas.drawingBuffer {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.nav-links li a {
-  text-decoration: none;
+ .nav-links li a {
+  /* padding: 10px 20px;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);*/
+  text-decoration: none; 
   color: #333;
-}
+} 
 
 .logout-button {
   background-color: #dc3545;
