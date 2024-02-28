@@ -18,6 +18,7 @@ export default function AddNewProduct() {
         const [scanCode, setScanCode] = useState('');
         const [results, setResults] = useState(null);
 
+
         useEffect(() => {
           if (scanSuccess) {
             setProductCode(scanCode);
@@ -40,11 +41,14 @@ export default function AddNewProduct() {
   
         const addProd = async (e) => {
         e.preventDefault();
+
+        const transactionDate = new Date();
+        const transactionType = "add";
        
         let result = await fetch(
           process.env.REACT_APP_BACKEND_URL+'/addnewproduct', {
               method: "post",
-              body: JSON.stringify({productCode, productName, productQty, productPrice }),
+              body: JSON.stringify({productCode, productName, productQty, productPrice, transactionDate, transactionType }),
               headers: {
                   'Content-Type': 'application/json'
               }
