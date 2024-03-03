@@ -5,8 +5,9 @@ import { Button ,Table} from 'react-bootstrap';
 const BuyProduct = () => {
 
     const [prodList, setProdList] = useState([]);
+    const [cartList, setCartList] = useState([]);
     const [totalQty, setTotalQty] = useState(0);
-    
+
     const [pCode, setPCode] = useState('');
     const [selectedIndex, setSelectedIndex] = useState(0);
     const [updatedData, setUpdatedData] = useState({
@@ -40,43 +41,140 @@ const BuyProduct = () => {
 
 
     const addToCart = () => {
+        const prodCode = prodList[selectedIndex].productCode;
+
+        const index = cartList.findIndex(item => item.productCode === prodCode);
+
+        if (index < 0) {
+            const selectedItem = prodList[selectedIndex];
+            const newItem = {...selectedItem,
+                    productQty: 1,
+                    subTotal: selectedItem.productPrice * 1
+                };
+            setCartList([...cartList, newItem]);
+        }
+        else {
+            alert("Product already in cart");
+        }
+
+
+        
+
+    };
+
+
+    const CheckOut = (products) => {
+    
+    console.log(cartList);
+
+    const promiseUpdateQuantities = cartList.map((product) => 
+    {
+        const updatedQty = prodList.find(item => item.productCode === product.productCode).productQty - product.productQty;
+        return fetch(process.env.REACT_APP_BACKEND_URL+`/updateDataQty/${product.productCode}`, {
+            method: 'PUT',
+            body: JSON.stringify({ 
+                productQty: updatedQty,}),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+            
+        })
+        .then(response => response.json())
+        .then(data => 
+            {   console.log(data)
+                console.log("Data for product " + product.productCode + " saved successfully");
+            }
+        )
+        .catch((error) => {
+            console.log("pcode" + product.productCode);
+            console.error('Error:', error);
+        });
+    });
+
+    // Wait for all promises for the first API to resolve
+    Promise.all(promiseUpdateQuantities)
+    .then(() => {
+        console.log('All products updated successfully in updateQty API');
+
+        // Create an array of promises for the second API
+        const promiseTransaction = cartList.map((product) => {
+            const transactionDate = new Date();
+            const transactionType = "buy";
+        return fetch(process.env.REACT_APP_BACKEND_URL+'/addtransaction', {
+            method: 'post',
+            body: JSON.stringify({ productCode: product.productCode,
+                productName: product.productName,
+                productQty: product.productQty,
+                productPrice: product.productPrice,
+                transactionDate: product.transactionDate,
+                transactionType: product.transactionType,
+                transactDate:transactionDate,
+                transactType:transactionType}),
+            headers: {
+            'Content-Type': 'application/json'
+            },
+            
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            console.log("Data for product " + product.productCode + " added transaction successfully in addtransaction API");
+        })
+        .catch((error) => {
+            console.log("pcode" + product.productCode);
+            console.error('Error:', error);
+        });
+        });
+
+        // Wait for all promises for the second API to resolve
+        return Promise.all(promiseTransaction);
+    })
+    .then(() => {
+        console.log('All products updated successfully in the second API');
+        alert("Checkout successful");
+        setCartList([]);
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
 
         
     };
 
+    const handleQuantityChange = (e, productCode) => {
+        
+        
+        // Find the index of the item in the cartList
+        const index = cartList.findIndex(item => item.productCode === productCode);
 
-    const updateProdQty = () => {
-    
-    console.log(pCode);
-    fetch(process.env.REACT_APP_BACKEND_URL+`/updateDataQty/${pCode}`, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(updatedData)
-    })
-    .then(response => response.json())
-    .then(data => 
-        {   console.log(data)
-            alert("Data saved succesfully");
-        }
-    )
-    .catch((error) => {
-        console.log("pcode" + pCode);
-        console.error('Error:', error);
-    });
-
-        // result = await result.json();
-        // console.warn(result);
-        // if (result) {
-        //    alert("Data saved succesfully");
-        //    setProdList(result);
-        // }
+        // Parse the new quantity as a number
+        const newQuantity = Number(e.target.value);
+       
+      
+        // Create a new item with the updated quantity and subtotal
+        const newItem = {
+          ...cartList[index],
+          productQty: newQuantity,
+          subTotal: cartList[index].productPrice * newQuantity
+        };
+      
+        // Create a new cartList array with the updated item
+        const newCartList = [
+          ...cartList.slice(0, index),
+          newItem,
+          ...cartList.slice(index + 1)
+        ];
+      
+        // Update the state
+        setCartList(newCartList);
+     
+        
     };
 
-    
-
     useEffect(() => {
+
+        setCartList([]);
+
         const fetchData = async () => 
         {
            
@@ -99,6 +197,7 @@ const BuyProduct = () => {
                  console.log("Data retrieved succesfully");
                  
                  setProdList( data);
+                
                  
               }
        
@@ -151,7 +250,7 @@ const BuyProduct = () => {
             </tbody>
         </Table>
 
-        <Button variant="primary" style={{ marginTop: '20px' }} onClick={updateProdQty}>
+        <Button variant="primary" style={{ marginTop: '20px' }} onClick={addToCart}>
         Add To Cart
         </Button>
 
@@ -160,36 +259,41 @@ const BuyProduct = () => {
             <tr style={{ border: '1px solid black' }}>
             <th>Product ID</th>
             <th>Product Name</th>
-            <th>Price</th>
             <th>Qty</th>
+            <th>Price</th>
             <th>Sub Total</th>
             </tr>
         </thead>
         <tbody>
-            {prodList.map(item => { 
+            {cartList.map(item => { 
                 return (
-                <tr style={{ border: '1px solid black' }}>
+                <tr style={{ border: '1px solid black' }} key={item.productCode}>
                     <td style={{ border: '1px solid black', wordWrap: 'break-word' }}>{item.productCode}</td>
                     <td style={{ border: '1px solid black', wordWrap: 'break-word' }}>{item.productName}</td>
-                    <td style={{ border: '1px solid black', wordWrap: 'break-word' }}>{item.productQty}</td>
+                    <td style={{ border: '1px solid black', wordWrap: 'break-word' }} >
+                        <input value= {item.productQty} type="text" onChange={(e) => handleQuantityChange(e, item.productCode)} />
+                    </td>
                     <td style={{ border: '1px solid black', wordWrap: 'break-word' }}>{item.productPrice}</td>
+                    <td style={{ border: '1px solid black', wordWrap: 'break-word' }}>{item.subTotal}</td>           
                 </tr>
+               
                 );
             })}
+            <tr style={{ border: '1px solid black' }}>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th>Total</th>
+            <td style={{ border: '1px solid black', wordWrap: 'break-word' }}>
+                {cartList.reduce((total, item) => total + item.subTotal, 0)}    
+            </td>
+            </tr>
         </tbody>
         </Table>
-        {/* <Button variant="secondary" style={{ marginTop: '20px' }} onClick={toggle}>Scan Barcode</Button> */}
+        <Button variant="primary" style={{ marginTop: '20px' }} onClick={() => CheckOut(cartList)}>
+        CheckOut
+        </Button>
 
-        <div>
-  
-    
-        {/* <Modal show={modal} onHide={toggle}>
-        <Modal.Header closeButton="true" />
-        <Modal.Body>
-            <Scanner handleScan={onDetected} />
-        </Modal.Body>
-        </Modal> */}
-  </div>
   </>
   );
 }
