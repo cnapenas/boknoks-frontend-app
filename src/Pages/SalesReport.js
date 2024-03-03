@@ -2,24 +2,27 @@ import React, { useState, useEffect } from 'react';
 
 
 const SalesReport = () => {
+  const dateInGMT8 = new Date();
+  dateInGMT8.setUTCHours(dateInGMT8.getUTCHours() + 8);
+
   const [selectedDay, setSelectedDay] = useState(1);
-  const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth());
-  const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
+  const [selectedMonth, setSelectedMonth] = useState(dateInGMT8.getMonth());
+  const [selectedYear, setSelectedYear] = useState(dateInGMT8.getFullYear());
   const [daysInMonth, setDaysInMonth] = useState([]);
   const [transactions, setTransactions] = useState(null);
   const [showTable, setShowTable] = useState(false);
 
 
   const months = [...Array(12)].map((_, i) => {
-    const date = new Date();
+    const date = new Date(dateInGMT8);
     date.setMonth(i);
     return date.toLocaleString('default', { month: 'long' });
   });
 
-  const lastTwoYears = [new Date().getFullYear() - 1, new Date().getFullYear()];
+  const lastTwoYears = [dateInGMT8.getFullYear() - 1, dateInGMT8.getFullYear()];
 
   useEffect(() => {
-    const date = new Date();
+    const date = new Date(dateInGMT8);
     date.setMonth(selectedMonth);
     date.setDate(1);
     const days = [];
@@ -34,12 +37,12 @@ const SalesReport = () => {
 
   const DisplayReport = () => {
 
-  
+    const tDate = new Date(selectedYear, selectedMonth, selectedDay);
+    tDate.setUTCHours(tDate.getUTCHours() + 8);
+    const tType = "buy";
 
-      const tDate = new Date(selectedYear, selectedMonth, selectedDay);
-      const tType = "buy";
 
-      fetch(process.env.REACT_APP_BACKEND_URL+`/getSalesForDate/${tDate}/${tType}`, {
+    fetch(process.env.REACT_APP_BACKEND_URL+`/getSalesForDate/${tDate.toISOString()}/${tType}`, {
          method: "get",
          headers: {
             'Content-Type': 'application/json'
