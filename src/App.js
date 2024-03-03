@@ -14,6 +14,7 @@ import LoginForm from './Pages/Login';
 import { useState } from 'react';
 import { UserProvider } from './Pages/UserContext';
 import BuyProduct from './Pages/BuyProduct';
+import SalesReport from './Pages/SalesReport';
 
 export default function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(true);
@@ -32,6 +33,7 @@ export default function App() {
           <Route path="searchproduct" element={<SearchProduct />} />
           <Route path="deleteproduct" element={<DeleteProduct />} />
           <Route path="buyproduct" element={<BuyProduct />} />
+          <Route path="salesreport" element={<SalesReport />} />
           <Route path="*" element={<NoPage />} />
         </Route>
       </Routes>

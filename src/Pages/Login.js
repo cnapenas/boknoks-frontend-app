@@ -59,9 +59,10 @@ const handleLogin = async (event) => {
             const data = await response.json();
             console.log('Login successful json' + data);
             console.log('Login successful user' + data.user);
-            const usrnme = data.user;
-            const { setUsrnme } =userContext;
-            setUsrnme(usrnme);
+            const usr = data.user;
+            const { setusr } =userContext;
+            setusr(usr);
+            console.log('Login successful user' + usr.userType);
             setIsAuthenticated(true);
             navigate('/Home');
             
@@ -85,12 +86,13 @@ const handleRegister = async (event) => {
        
     event.preventDefault();
     try {
+            const userType = "user";
             const response = await fetch(process.env.REACT_APP_BACKEND_URL+'/register', {
             method: "post",
             headers: {
               'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ username, password })
+            body: JSON.stringify({ username, password, userType })
         });
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);

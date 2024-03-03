@@ -1,6 +1,8 @@
 
 import React, { useEffect, useState } from 'react';
 import { Button ,Table} from 'react-bootstrap';
+import { useContext } from 'react';
+import { UserContext } from './UserContext';
 
 const BuyProduct = () => {
 
@@ -15,11 +17,22 @@ const BuyProduct = () => {
     });
     const [qtyArray, setQtyArray] = useState([]);
     const [pCodeArray, setPCodeArray] = useState([]);
+    const { usr } = useContext(UserContext);
+    const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')) || usr);
 
     // const [modal, setModal] = useState(false);
     // const [scanSuccess, setScanSuccess] = useState(false);
     // const [scanCode, setScanCode] = useState('');
     // const [results, setResults] = useState(null);
+     // Store usrnme in localStorage whenever it changes
+     useEffect(() => {
+        if (usr) {
+            console.log('Storing user in localStorage: ' + usr.username);
+            localStorage.setItem('user', JSON.stringify(usr));
+            setUser(usr);
+        }
+
+    }, [usr]);
 
     const handleSelectChange = (event) => {
         const newSelectedIndex = event.target.selectedIndex;
@@ -57,7 +70,7 @@ const BuyProduct = () => {
             alert("Product already in cart");
         }
 
-
+        
         
 
     };
@@ -109,7 +122,8 @@ const BuyProduct = () => {
                 transactionDate: product.transactionDate,
                 transactionType: product.transactionType,
                 transactDate:transactionDate,
-                transactType:transactionType}),
+                transactType:transactionType,
+                transactUser: user.username}),
             headers: {
             'Content-Type': 'application/json'
             },
@@ -279,11 +293,12 @@ const BuyProduct = () => {
                
                 );
             })}
-            <tr style={{ border: '1px solid black' }}>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th>Total</th>
+            <tr>
+            <th style={{ borderLeft: '1px solid black', borderBottom: '1px solid black', borderRight: 'none', padding: '10px' }}>Total</th>
+            <th style={{ borderBottom: '1px solid black'}}></th>
+            <th style={{ borderBottom: '1px solid black'}}></th>
+            <th style={{ borderBottom: '1px solid black',  borderRight: '1px solid black'}}></th>
+            
             <td style={{ border: '1px solid black', wordWrap: 'break-word' }}>
                 {cartList.reduce((total, item) => total + item.subTotal, 0)}    
             </td>

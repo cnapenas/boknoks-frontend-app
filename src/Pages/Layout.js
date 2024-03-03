@@ -4,13 +4,28 @@ import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import React, { useContext } from 'react';
 import { UserContext } from './UserContext';
+import { useEffect } from 'react';
+import { useState } from 'react';
 
 
 function Layout({isAuthenticated,setIsAuthenticated}) {
 
     const navigate = useNavigate();
     const location = useLocation();
-    const { usrnme } = useContext(UserContext);
+    const { usr } = useContext(UserContext);
+    const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')) || usr);
+  
+
+     // Store usrnme in localStorage whenever it changes
+     useEffect(() => {
+        if (usr) {
+            console.log('Storing user in localStorage: ' + usr.username);
+            localStorage.setItem('user', JSON.stringify(usr));
+            setUser(usr);
+        }
+
+        
+    }, [usr]);
 
     const logout = async () => {
         console.log('Logging out');
@@ -36,7 +51,10 @@ function Layout({isAuthenticated,setIsAuthenticated}) {
         }
     };
 
-    const username = usrnme;
+    // Retrieve username from localStorage
+    
+    console.log('User: ' + user.username);
+    console.log('User type: ' + user.userType)
 
 
     return (
@@ -44,7 +62,7 @@ function Layout({isAuthenticated,setIsAuthenticated}) {
             <nav className='"navbar"'>
                 <div className='user-info'>
                     <label>Welcome, </label>
-                    <label>{username}</label>
+                    <label>{user.username}</label>
                     <button onClick={logout}>Logout</button>
                 </div>
                 <ul className='nav-links'>
@@ -57,6 +75,8 @@ function Layout({isAuthenticated,setIsAuthenticated}) {
                     <li>
                         <Link to="/AddProductStock">Add Product Stock</Link>
                     </li>
+                    {user.userType === 'admin' && (
+                        <>
                     <li>
                         <Link to="/EditProductPrice">Edit Product Price</Link>
                     </li>
@@ -67,8 +87,15 @@ function Layout({isAuthenticated,setIsAuthenticated}) {
                         <Link to="/DeleteProduct">Delete Product</Link>
                     </li>
                     <li>
+                        <Link to="/SalesReport">Sales Report</Link>
+                    </li>
+                    </>
+                    )
+                    }
+                    <li>
                         <Link to="/BuyProduct">Buy</Link>
                     </li>
+                   
                 </ul>
                
             </nav>
