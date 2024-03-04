@@ -135,15 +135,21 @@ canvas.drawingBuffer {
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
   padding-top: 40px;
+  padding-left: 0px;
   list-style-type: none;
+  
+  flex-wrap: wrap;
+  justify-content: space-between;
   
 }
 
 .nav-links li {
-  padding: 10px 20px;
+  padding: 10px 10px;
   background-color: #fff;
   border-radius: 5px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  flex: 1 0 auto;
+  text-align: center;
 }
 
  .nav-links li a {
@@ -174,5 +180,25 @@ canvas.drawingBuffer {
 
   .nav-links li {
     margin-bottom: 20px;
+  }
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .SalesReport {
+    padding: 5px;
+  }
+
+  .SalesReport select {
+    width: 100%;
+    margin-bottom: 5px;
+  }
+
+  .SalesReport table {
+    font-size: 12px;
+  }
+
+  .SalesReport th, .SalesReport td {
+    padding: 5px;
   }
 }

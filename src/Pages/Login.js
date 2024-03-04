@@ -132,6 +132,7 @@ const handleRegister = async (event) => {
 
 return (
   <div className="container">
+    <h1 style={{ textAlign: 'center', fontSize: '2em' }}>{process.env.REACT_APP_STORE_NAME} INVENTORY SYSTEM</h1>
      <Modal show={isLoading} dialogClassName="centered-modal">
         <Modal.Header />
         <Modal.Body className="text-center">

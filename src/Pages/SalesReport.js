@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { Button } from 'react-bootstrap';
+
+const dateInGMT8 = new Date();
+dateInGMT8.setUTCHours(dateInGMT8.getUTCHours() + 8);
 
 
 const SalesReport = () => {
-  const dateInGMT8 = new Date();
-  dateInGMT8.setUTCHours(dateInGMT8.getUTCHours() + 8);
+  
 
   const [selectedDay, setSelectedDay] = useState(1);
   const [selectedMonth, setSelectedMonth] = useState(dateInGMT8.getMonth());
@@ -79,7 +82,7 @@ const SalesReport = () => {
   }
 
   return (
-    <div style={{ padding: '10px' }}>
+    <div className="SalesReport" style={{ padding: '10px' }}>
       <h1>SalesReport</h1>
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'start', marginBottom: '20px' }}>
         <select style={{ marginBottom: '10px' }} onChange={(e) => setSelectedDay(Number(e.target.value))}>
@@ -110,7 +113,7 @@ const SalesReport = () => {
             </option>
           ))}
         </select>
-        <button onClick={DisplayReport}>Show Transactions</button>
+        <Button variant="primary" onClick={DisplayReport}>Show Transactions</Button>
       </div>
         {showTable && (
         <table style={{ width: '100%', tableLayout: 'fixed', borderCollapse: 'collapse' }}>

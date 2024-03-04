@@ -65,6 +65,7 @@ function Layout({isAuthenticated,setIsAuthenticated}) {
                     <label>{user.username}</label>
                     <button onClick={logout}>Logout</button>
                 </div>
+                <h1 style={{ textAlign: 'center', fontSize: '2em' }}>{process.env.REACT_APP_STORE_NAME} INVENTORY SYSTEM</h1>
                 <ul className='nav-links'>
                     <li>
                         <Link to="/Home">Home</Link>
