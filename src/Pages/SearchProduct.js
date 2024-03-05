@@ -11,10 +11,10 @@ const  SearchProduct = () => {
     const fetchData = useCallback ((pCode, pName,setProdList)  => 
     {
      
-        if (pName === ' ') {
+        if (!pName || pName.trim() === '') {
             setPName('empty');
         }
-        if (pCode === ' ') {
+        if (!pCode || pCode.trim() === '') {
             setPCode('empty');
         }
         console.log("pCode: ", pCode);
@@ -105,13 +105,12 @@ const  SearchProduct = () => {
          <hr />
          <div>
             <div className="input-group">
-                <label htmlFor="myTextField1">Enter Product Code: </label>
-                <input id="myTextField1" type="text" placeholder="Enter text here"  onChange={productCodeEntered} onBlur={handleBlurPCode} onKeyPress={handleKeyPressPCode}/>
-            </div>
-
-            <div className="input-group">
                 <label htmlFor="myTextField2">Enter Product Name: </label>
                 <input id="myTextField2" type="text" placeholder="Enter text here"  onChange={productNameEntered} onBlur={handleBlurPName} onKeyPress={handleKeyPressPName} />
+            </div>
+            <div className="input-group">
+                <label htmlFor="myTextField1">Enter Product Code: </label>
+                <input id="myTextField1" type="text" placeholder="Enter text here"  onChange={productCodeEntered} onBlur={handleBlurPCode} onKeyPress={handleKeyPressPCode}/>
             </div>
          {prodList.length > 0 && (
             <table style={{ border: '1px solid black', borderCollapse: 'collapse' }}>

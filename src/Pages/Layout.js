@@ -76,13 +76,13 @@ function Layout({isAuthenticated,setIsAuthenticated}) {
                     <li>
                         <Link to="/AddProductStock">Add Product Stock</Link>
                     </li>
+                    <li>
+                        <Link to="/SearchProduct">Search Product</Link>
+                    </li>
                     {user.userType === 'admin' && (
                         <>
                     <li>
                         <Link to="/EditProductPrice">Edit Product Price</Link>
-                    </li>
-                    <li>
-                        <Link to="/SearchProduct">Search Product</Link>
                     </li>
                     <li>
                         <Link to="/DeleteProduct">Delete Product</Link>
