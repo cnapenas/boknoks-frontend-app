@@ -17,33 +17,8 @@ const EditProductPrice = () => {
     });
     const [priceArray, setPriceArray] = useState([]);
     const [pCodeArray, setPCodeArray] = useState([]);
-    
 
-    const handleSelectChange = (event) => {
-        const newSelectedIndex = event.target.selectedIndex;
-        setSelectedIndex(newSelectedIndex);
-        const priceArray = prodList.map((item, index) => item.productPrice);
-        const pCodeArray = prodList.map((item, index) => item.productCode);
-        setPCodeArray(pCodeArray);
-        setPriceArray(priceArray);
-        setPCode(pCodeArray[newSelectedIndex]);
-        
-        
-        
-       
-    }
-
-    const addPriceChange = (event) => {
-        
-        setNewPrice(event.target.value);
-
-        setUpdatedData({ productPrice: event.target.value});
-      };
-
-
-
-   useEffect(() => {
-      const fetchData = async () => 
+    const fetchData = async () => 
       {
          
          fetch(process.env.REACT_APP_BACKEND_URL+'/getProducts', {
@@ -82,8 +57,49 @@ const EditProductPrice = () => {
 
          
       };
+    
 
-      
+    const handleSelectChange = (event) => {
+        const newSelectedIndex = event.target.selectedIndex;
+        setSelectedIndex(newSelectedIndex);
+        const priceArray = prodList.map((item, index) => item.productPrice);
+        const pCodeArray = prodList.map((item, index) => item.productCode);
+        setPCodeArray(pCodeArray);
+        setPriceArray(priceArray);
+        setPCode(pCodeArray[newSelectedIndex]);
+        
+        
+        
+       
+    }
+
+    const addPriceChange = (event) => {
+        
+        setNewPrice(event.target.value);
+
+        setUpdatedData({ productPrice: event.target.value});
+      };
+
+      useEffect(() => {
+        if (prodList.length > 0) {
+          setPriceArray(prodList.map((item, index) => item.productPrice));
+          setPCodeArray(prodList.map((item, index) => item.productCode));
+        }
+      }, [prodList]);
+
+      useEffect(() => {
+        if (pCodeArray.length > 0) {
+          setPCode(pCodeArray[selectedIndex]);
+        }
+      }, [pCodeArray]);
+
+      useEffect(() => {
+        if (newPrice) {
+            setUpdatedData({ productPrice: newPrice });
+        }
+        }, [newPrice]);
+
+   useEffect(() => {
 
       fetchData();
    }, []);

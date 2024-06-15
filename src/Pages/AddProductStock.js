@@ -1,9 +1,11 @@
 
 import React from 'react';
+import { useRef } from 'react';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { Button, Modal } from 'react-bootstrap';
 import Scanner from './Scanner';
+
 
 const AddProductStock = () => {
     
@@ -22,45 +24,9 @@ const AddProductStock = () => {
     const [scanSuccess, setScanSuccess] = useState(false);
     const [scanCode, setScanCode] = useState('');
     const [results, setResults] = useState(null);
-    
+    const inputRef = useRef();
 
-    const handleSelectChange = (event) => {
-        const newSelectedIndex = event.target.selectedIndex;
-        setSelectedIndex(newSelectedIndex);
-        const qtyArray = prodList.map((item, index) => item.productQty);
-        const pCodeArray = prodList.map((item, index) => item.productCode);
-        setPCodeArray(pCodeArray);
-        setQtyArray(qtyArray);
-        setPCode(pCodeArray[newSelectedIndex]);
-        setUpdatedData({ productQty: qtyArray[newSelectedIndex] + Number(totalQty) });
-        
-       
-    }
-
-    const addQtyChange = (event) => {
-        setTotalQty (qtyArray.length > selectedIndex ? ( Number(qtyArray[selectedIndex]) + Number(event.target.value)) : (prodList.length > 0 ? (prodList[0].productQty + Number(event.target.value)) : 0))
-        //setTotalQty(event.target.value);
-      };
-
-    const toggle = () => {
-        setModal(prevModal => !prevModal);
-        setScanSuccess(false);
-    }
-      
-    const onDetected = (result) => {
-        setModal(false);
-        setScanCode(result ? result.codeResult.code : '');
-        setScanSuccess(!!result);
-        setResults(result);
-        //alert("Barcode detected: " + result.codeResult.format);
-        const productIndex = prodList.findIndex(item => item.productCode === scanCode);
-        setSelectedIndex(productIndex);
-    }
-
-
-
-   useEffect(() => {
-      const fetchData = async () => 
+    const fetchData = async () => 
       {
          
          fetch(process.env.REACT_APP_BACKEND_URL+'/getProducts', {
@@ -99,16 +65,87 @@ const AddProductStock = () => {
 
          
       };
+    
 
+    const handleSelectChange = (event) => {
+        fetchData();
+        
+        const newSelectedIndex = event.target.selectedIndex;
+        setSelectedIndex(newSelectedIndex);
+        const qtyArray = prodList.map((item, index) => item.productQty);
+        const pCodeArray = prodList.map((item, index) => item.productCode);
+        setPCodeArray(pCodeArray);
+        setQtyArray(qtyArray);
+        setPCode(pCodeArray[newSelectedIndex]);
+        setTotalQty(qtyArray[newSelectedIndex] + Number (inputRef.current.value));
+        setUpdatedData({productQty: Number(totalQty) });
+    
+       
+    }
+
+    const addQtyChange = (event) => {
+       
+        const newTotalQty = qtyArray.length > selectedIndex 
+        ? Number(qtyArray[selectedIndex]) + Number(event.target.value)
+        : prodList.length > 0 
+            ? prodList[0].productQty + Number(event.target.value) 
+            : 0;
+
+        setTotalQty(newTotalQty);
+        console.log(qtyArray[selectedIndex]);
+        console.log(event.target.value);
+        console.log(newTotalQty);
+
+        setUpdatedData({ productQty: newTotalQty });
+      };
+
+    const toggle = () => {
+        setModal(prevModal => !prevModal);
+        setScanSuccess(false);
+    }
       
+    const onDetected = (result) => {
+        setModal(false);
+        setScanCode(result ? result.codeResult.code : '');
+        setScanSuccess(!!result);
+        setResults(result);
+        //alert("Barcode detected: " + result.codeResult.format);
+        const productIndex = prodList.findIndex(item => item.productCode === scanCode);
+        setSelectedIndex(productIndex);
+    }
 
+    useEffect(() => {
+        if (prodList.length > 0) {
+          setQtyArray(prodList.map((item, index) => item.productQty));
+          setPCodeArray(prodList.map((item, index) => item.productCode));
+        }
+      }, [prodList]);
+
+      useEffect(() => {
+        if (pCodeArray.length > 0) {
+          setPCode(pCodeArray[selectedIndex]);
+        }
+      }, [pCodeArray]);
+
+      useEffect(() => {
+        if (totalQty > 0) {
+          setUpdatedData({ productQty: totalQty });
+        }
+      },    [totalQty]);
+
+   
+      useEffect(() => {
+      
       fetchData();
    }, []);
 
 
    const updateProdQty = () => {
+
        
     console.log(pCode);
+    console.log(updatedData);
+   
     fetch(process.env.REACT_APP_BACKEND_URL+`/updateDataQty/${pCode}`, {
         method: 'PUT',
         headers: {
@@ -167,7 +204,9 @@ const AddProductStock = () => {
                     <label>{qtyArray.length > selectedIndex ? qtyArray[selectedIndex] : (prodList.length > 0 ? prodList[0].productQty : 'Loading...')}</label>
                     </td>
                     <td style={{ border: '1px solid black' }}>
-                    <input type="text" placeholder="Enter text here" onChange={addQtyChange} />
+                   
+                    <input type="text" placeholder="Enter text here" onChange={addQtyChange} ref={inputRef} />
+                   
                     </td>
                     <td style={{ border: '1px solid black' }}>
                     <label>{totalQty>0?totalQty: qtyArray.length > selectedIndex ? ( Number(qtyArray[selectedIndex]) + Number(totalQty)) : (prodList.length > 0 ? prodList[0].productQty : 'Loading...')} </label>
