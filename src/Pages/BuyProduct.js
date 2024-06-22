@@ -9,6 +9,8 @@ const BuyProduct = () => {
     const [prodList, setProdList] = useState([]);
     const [cartList, setCartList] = useState([]);
     const [totalQty, setTotalQty] = useState(0);
+    const [totalPayable, setTotalPayable] = useState(0);
+    const [custMoney, setCustMoney] = useState('');
 
     const [pCode, setPCode] = useState('');
     const [selectedIndex, setSelectedIndex] = useState(0);
@@ -46,6 +48,13 @@ const BuyProduct = () => {
         
        
     }
+
+    const handleCustMoney = (event) => {
+        const value = event.target.value;
+        if (value >= 0) { // this regular expression matches only numeric input
+            setCustMoney(value);
+        }
+    };
 
     const addQtyChange = (event) => {
         setTotalQty (qtyArray.length > selectedIndex ? ( Number(qtyArray[selectedIndex]) + Number(event.target.value)) : (prodList.length > 0 ? (prodList[0].productQty + Number(event.target.value)) : 0))
@@ -161,6 +170,17 @@ const BuyProduct = () => {
         // Find the index of the item in the cartList
         const index = cartList.findIndex(item => item.productCode === productCode);
 
+        if (index < 0) {
+            return;
+        }
+        else if (e.target.value == 0) 
+        
+        {
+            const newCartList = cartList.filter(item => item.productCode !== productCode);
+            setCartList(newCartList);
+            return;
+        }
+
         // Parse the new quantity as a number
         const newQuantity = Number(e.target.value);
        
@@ -235,6 +255,11 @@ const BuyProduct = () => {
         fetchData();
      }, []);
 
+     useEffect(() => {
+       setTotalPayable( cartList.reduce((totalPayable, item) => totalPayable + item.subTotal, 0));
+        console.log(totalPayable); // replace this with whatever you want to do with total
+    }, [cartList]);
+
   return (
     <>
     <h1>Buy Product</h1>
@@ -294,13 +319,33 @@ const BuyProduct = () => {
                 );
             })}
             <tr>
-            <th style={{ borderLeft: '1px solid black', borderBottom: '1px solid black', borderRight: 'none', padding: '10px' }}>Total</th>
+            <th style={{ borderLeft: '1px solid black', borderBottom: '1px solid black', borderRight: 'none', padding: '10px' }}>Total Payable</th>
             <th style={{ borderBottom: '1px solid black'}}></th>
             <th style={{ borderBottom: '1px solid black'}}></th>
             <th style={{ borderBottom: '1px solid black',  borderRight: '1px solid black'}}></th>
             
             <td style={{ border: '1px solid black', wordWrap: 'break-word' }}>
                 {cartList.reduce((total, item) => total + item.subTotal, 0)}    
+            </td>
+            </tr>
+            <tr>
+            <th style={{ borderLeft: '1px solid black', borderBottom: '1px solid black', borderRight: 'none', padding: '10px' }}>Customer Money</th>
+            <th style={{ borderBottom: '1px solid black'}}></th>
+            <th style={{ borderBottom: '1px solid black'}}></th>
+            <th style={{ borderBottom: '1px solid black',  borderRight: '1px solid black'}}></th>
+            
+            <td style={{ border: '1px solid black', wordWrap: 'break-word' }}>
+            <input type="text" placeholder="Enter Customer Money" value={custMoney} onChange={handleCustMoney} style={{ width: '200px', appearance: 'textfield' }} />
+            </td>
+            </tr>
+            <tr>
+            <th style={{ borderLeft: '1px solid black', borderBottom: '1px solid black', borderRight: 'none', padding: '10px' }}>Change</th>
+            <th style={{ borderBottom: '1px solid black'}}></th>
+            <th style={{ borderBottom: '1px solid black'}}></th>
+            <th style={{ borderBottom: '1px solid black',  borderRight: '1px solid black'}}></th>
+            
+            <td style={{ border: '1px solid black', wordWrap: 'break-word' }}>
+                {custMoney - totalPayable}    
             </td>
             </tr>
         </tbody>

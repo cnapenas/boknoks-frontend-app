@@ -59,9 +59,12 @@ export default function AddNewProduct() {
                   'Content-Type': 'application/json'
               }
           })
-          result = await result.json();
+          
+          const data = await result.json();
+
+
           console.warn(result);
-          if (result) {
+          if (result.ok) {
               alert("Data saved succesfully");
    
               setProductCode("");
@@ -69,6 +72,11 @@ export default function AddNewProduct() {
               setProductPrice(0);
               setProductQty(0);
           }
+          else{
+            alert("Error: " + data.message);
+          }
+
+         
         }
 
         

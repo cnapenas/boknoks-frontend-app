@@ -61,6 +61,7 @@ const DeleteProduct = () => {
      }
 
      const reloadItems = (selIndex) => {
+       
         fetchData(setProdList);
         setSelectedIndex(selIndex);
         const qtyArray = prodList.map((item, index) => item.productQty);
@@ -100,6 +101,12 @@ const DeleteProduct = () => {
         console.error('There was a problem with the fetch operation: ', error);
         });
      }
+
+     useEffect(() => {
+      if (prodList.length > 0) {
+          setPCode(prodList[0].productCode);
+      }
+     }, [prodList]);
 
 
     return (

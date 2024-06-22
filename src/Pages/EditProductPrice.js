@@ -74,10 +74,14 @@ const EditProductPrice = () => {
     }
 
     const addPriceChange = (event) => {
-        
-        setNewPrice(event.target.value);
 
-        setUpdatedData({ productPrice: event.target.value});
+        if (event.target.value >= 0) {
+            setNewPrice(event.target.value);
+
+            setUpdatedData({ productPrice: event.target.value});
+        }
+        
+        
       };
 
       useEffect(() => {
